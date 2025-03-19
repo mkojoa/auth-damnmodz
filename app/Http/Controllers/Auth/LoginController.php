@@ -40,21 +40,21 @@ class LoginController extends Controller
     }
 
 
-    protected function authenticated(Request $request, $user): \Illuminate\Http\JsonResponse
-    {
-        // Create a new token for the authenticated user
-        $tokenResult = $user->createToken('AuthToken');
-        $token = $tokenResult->accessToken;
+    // protected function authenticated(Request $request, $user): \Illuminate\Http\JsonResponse
+    // {
+    //     // Create a new token for the authenticated user
+    //     $tokenResult = $user->createToken('AuthToken');
+    //     $token = $tokenResult->accessToken;
 
-        return response()->json([
-            'access_token' => $token,
-            'token_type' => 'Bearer',
-            'expires_at' => now()->addHours(1)->toDateTimeString(), // Adjust expiration as needed
-            'user' => [
-                'id' => $user->id,
-                'email' => $user->email,
-                'type' => $user->type,
-            ]
-        ]);
-    }
+    //     return response()->json([
+    //         'access_token' => $token,
+    //         'token_type' => 'Bearer',
+    //         'expires_at' => now()->addHours(1)->toDateTimeString(), // Adjust expiration as needed
+    //         'user' => [
+    //             'id' => $user->id,
+    //             'email' => $user->email,
+    //             'type' => $user->type,
+    //         ]
+    //     ]);
+    // }
 }
