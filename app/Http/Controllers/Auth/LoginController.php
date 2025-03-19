@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -36,5 +37,24 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
         $this->middleware('auth')->only('logout');
+    }
+
+
+    protected function authenticated(Request $request, $user): \Illuminate\Http\JsonResponse
+    {
+        // Create a new token for the authenticated user
+        $tokenResult = $user->createToken('AuthToken');
+        $token = $tokenResult->accessToken;
+
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'Bearer',
+            'expires_at' => now()->addHours(1)->toDateTimeString(), // Adjust expiration as needed
+            'user' => [
+                'id' => $user->id,
+                'email' => $user->email,
+                'type' => $user->type,
+            ]
+        ]);
     }
 }
